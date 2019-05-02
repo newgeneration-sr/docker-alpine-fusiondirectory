@@ -20,7 +20,7 @@ version: '3.1'
 services:
 
   openldap-fd:
-    image: samirkherraz/fusiondirectory
+    image: dotriver/fusiondirectory
     environment:
       - ADMIN_PASS=password
       - CONFIG_PASS=password
