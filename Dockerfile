@@ -9,7 +9,7 @@ ENV ADMIN_PASS=admin \
     SCHEMA2LDIF_VERSION=1.3 \
     FD_ADMIN=fd-admin \
     FD_PASS=admin \
-    FD_VERSION=1.2.3 \
+    FD_VERSION=1.3 \
     SMARTY_VERSION=3.1.33 \
     SMARTYGETTEXT_VERSION=1.6.1 \
     INSTANCE=exemple \
@@ -42,8 +42,10 @@ RUN set -x \
     php7-mbstring \
     php7-recode \
     php7-json \
+    php7-iconv \ 
     gettext \
     gettext-lang \
+    perl-digest-sha1 \
     perl-config-inifiles \
     perl-datetime \
     perl-ldap \
@@ -110,6 +112,7 @@ RUN set -x \
 RUN set -x \
     && apk --no-cache add perl bash openldap openldap-clients openldap-back-mdb openldap-overlay-memberof openldap-overlay-refint  \
     && rm -R /var/lib/openldap /etc/openldap/*.*
+    
 
 
 ## Install FusionDirectory
@@ -128,7 +131,6 @@ RUN set -x \
     && sed -i "s|/etc/ldap/|/etc/openldap/|g" /usr/bin/ldap-schema-manager  \
     && sed -i "s,ldapi:///',ldapi://%2Frun%2Fopenldap%2Fldapi.sock',g" /usr/bin/ldap-schema-manager \
     && chmod +x /usr/sbin/*
-
 
 ## Install FusionDirectory
 RUN set -x \
