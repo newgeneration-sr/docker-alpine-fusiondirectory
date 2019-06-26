@@ -158,7 +158,7 @@ RUN set -x \
     && cp -R /usr/src/fusiondirectory/contrib/fusiondirectory.conf /var/cache/fusiondirectory/template/fusiondirectory.conf \
     && cp -R /usr/src/fusiondirectory /var/www/ \
     && rm -R /var/www/fusiondirectory/.g* \
-    && sed -i "s/mail_body))/mail_body, 'html'))/g" /var/www/fusiondirectory/html/class_passwordRecovery.inc \
+    && sed -i "s/mail_body))/mail_body, NULL, NULL, 'html'))/g" /var/www/fusiondirectory/html/class_passwordRecovery.inc \
     && fusiondirectory-setup --set-fd_smarty_dir="/usr/share/php/smarty3/Smarty.class.php" --write-vars \
     && touch /etc/debian_version \
     && yes Yes | fusiondirectory-setup --check-directories --update-cache \
