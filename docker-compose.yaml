@@ -1,0 +1,32 @@
+version: '3'
+services:
+
+  openldap-fd:
+    image: dotriver/fusiondirectory
+    environment:
+      - ADMIN_PASS=password
+      - CONFIG_PASS=password
+      - DOMAIN=exemple.org
+      - FD_ADMIN=fd-admin
+      - FD_PASS=password
+      - INSTANCE=exemple
+    ports:
+      - 8000:80
+      - 389:389
+    volumes:
+      - openldap-data:/var/lib/openldap/
+      - openldap-config:/etc/openldap/
+    networks:
+      default:
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+      mode: global
+
+
+volumes:
+    openldap-data:
+    openldap-config:
