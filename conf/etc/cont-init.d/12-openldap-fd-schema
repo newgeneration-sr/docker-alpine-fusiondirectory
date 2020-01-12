@@ -372,9 +372,10 @@ fd_apply() {
 
   if [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
   	fd_apply core
-  	fusiondirectory-insert-schema -m core*.schema
-  	fusiondirectory-insert-schema -m ldapns.schema
-  	fusiondirectory-insert-schema -m template-fd.schema
+  	fusiondirectory-insert-schema $ARG core*.schema
+  	fusiondirectory-insert-schema $ARG ldapns.schema
+  	fusiondirectory-insert-schema $ARG template-fd.schema
+  	fusiondirectory-insert-schema $ARG sinaps-fd-conf.schema
   fi
 
   if [[ "$PLUGIN_MAIL" != "FALSE" ]] && [[ "$PLUGIN_MAIL" != "false" ]];  then
