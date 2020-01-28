@@ -2,20 +2,44 @@
 
 if [ -f /var/lib/openldap/base ];
 then
+  [ -d /var/lib/openldap ] || mkdir -p /var/lib/openldap
+  [ -d /run/openldap ] || mkdir -p /run/openldap
+  [ -d /etc/openldap/slapd.d ] || mkdir -p /etc/openldap/slapd.d
+  [ -d /etc/openldap/state ] || mkdir -p /etc/openldap/state
 
+  chown -R ldap:ldap /var/lib/openldap
+  chown -R ldap:ldap /etc/openldap
+  chown -R ldap:ldap /run/openldap
+
+  /usr/bin/schema2ldif /etc/openldap/schema/fusiondirectory/rfc2307bis.schema > /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
   /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
-  if [ ! -z $(fusiondirectory-insert-schema -l | grep nis) ];
+
+  if [ "nis" = $(fusiondirectory-insert-schema -l | grep nis ) ];
   then
+
+
+    echo "NEED TO PATCH"
     slapcat -n0 > /tmp/00config.ldif
     slapcat  > /tmp/00users.ldif
-    rm -r /etc/openldap/slapd.d/* 
-    rm -r /var/lib/openldap/*
+    sed -E -i '/dn: cn=\{[0-9]+\}nis/,/^$/d' /tmp/00config.ldif
+    sed -E -i '/dn: cn=\{[0-9]+\}systems-fd/,/^$/d' /tmp/00config.ldif
+    sed -E -i '/dn: cn=\{[0-9]+\}service-fd/,/^$/d' /tmp/00config.ldif
+    sed -E -i 's/structuralObjectClass: (groupOfNames|posixGroup)/objectClass: groupOfNames/g' /tmp/00users.ldif
     killall slapd
-    sed -i '/dn: cn={3}nis/,/^$/d' /tmp/00config.ldif
+    rm -r /etc/openldap/slapd.d/*
+    rm -r /var/lib/openldap/*
+    echo " >> Reimport Config"
     slapadd -n 0 -F /etc/openldap/slapd.d -l /tmp/00config.ldif
+
+    echo " >> Import rfc2307bis"
     slapadd -n 0 -F /etc/openldap/slapd.d -l /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
-    sed -E -i 's/structuralObjectClass: (groupOfNames|posixGroup)/objectClass: groupOfMembers/g' /tmp/00users.ldif
-    slapadd -F /etc/openldap/slapd.d -n 1 -l /tmp/00users.ldif
+    /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
+    fusiondirectory-insert-schema -i /etc/openldap/schema/fusiondirectory/service*.schema
+    fusiondirectory-insert-schema -i /etc/openldap/schema/fusiondirectory/systems*.schema
+    killall slapd
+    echo " >> Reimport Users"
+    slapadd -n 1 -F /etc/openldap/slapd.d -l /tmp/00users.ldif
+    
   fi
 
 fi
