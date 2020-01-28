@@ -14,7 +14,7 @@ then
   /usr/bin/schema2ldif /etc/openldap/schema/fusiondirectory/rfc2307bis.schema > /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
   /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
 
-  if [ "nis" = $(fusiondirectory-insert-schema -l | grep nis ) ];
+  if [ "xnis" = "x$(fusiondirectory-insert-schema -l | grep nis )" ];
   then
 
 
