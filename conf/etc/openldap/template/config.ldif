@@ -18,7 +18,8 @@ cn: schema
 include: file:///etc/openldap/schema/core.ldif
 include: file:///etc/openldap/schema/cosine.ldif
 include: file:///etc/openldap/schema/inetorgperson.ldif
-include: file:///etc/openldap/schema/nis.ldif
+# include: file:///etc/openldap/schema/nis.ldif
+include: file:///etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
 
 # Frontend settings
 dn: olcDatabase=frontend,cn=config

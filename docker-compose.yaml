@@ -2,20 +2,24 @@ version: '3'
 services:
 
   openldap-fd:
-    image: dotriver/fusiondirectory
+    image: fusiondirectory
     environment:
-      - ADMIN_PASS=password
-      - CONFIG_PASS=password
-      - DOMAIN=exemple.org
-      - FD_ADMIN=fd-admin
-      - FD_PASS=password
-      - INSTANCE=exemple
+      - ADMIN_PASS=0JcUIZYGkiqqecya
+      - CONFIG_PASS=0JcUIZYGkiqqecya
+      - DOMAIN=equantum.fr
+      - FD_ADMIN=admin
+      - FD_PASS=aQm445WYn
+      - INSTANCE=eQuantum
+      - PLUGIN_POSIX=TRUE
+      - PLUGIN_MIXEDGROUPS=TRUE
+      - PLUGIN_NETGROUPS=TRUE
+      
     ports:
       - 8000:80
       - 389:389
     volumes:
       - openldap-data:/var/lib/openldap/
-      - openldap-config:/etc/openldap/
+      - openldap-config:/etc/openldap/slapd.d/
     networks:
       default:
     deploy:

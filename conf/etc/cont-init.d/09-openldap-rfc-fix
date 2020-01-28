@@ -1,0 +1,21 @@
+#!/usr/bin/with-contenv bash
+
+if [ -f /var/lib/openldap/base ];
+then
+
+  /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
+  if [ ! -z $(fusiondirectory-insert-schema -l | grep nis) ];
+  then
+    slapcat -n0 > /tmp/00config.ldif
+    slapcat  > /tmp/00users.ldif
+    rm -r /etc/openldap/slapd.d/* 
+    rm -r /var/lib/openldap/*
+    killall slapd
+    sed -i '/dn: cn={3}nis/,/^$/d' /tmp/00config.ldif
+    slapadd -n 0 -F /etc/openldap/slapd.d -l /tmp/00config.ldif
+    slapadd -n 0 -F /etc/openldap/slapd.d -l /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
+    sed -E -i 's/structuralObjectClass: (groupOfNames|posixGroup)/objectClass: groupOfMembers/g' /tmp/00users.ldif
+    slapadd -F /etc/openldap/slapd.d -n 1 -l /tmp/00users.ldif
+  fi
+
+fi

@@ -123,7 +123,6 @@ RUN set -x \
     && export URL=https://gitlab.fusiondirectory.org/fusiondirectory/fd-plugins/-/archive/fusiondirectory-${FD_VERSION}/fd-plugins-fusiondirectory-${FD_VERSION}.tar.gz \
     && curl $URL | tar xvfz - --strip 1 -C /usr/src/fusiondirectory-plugins \
     && mkdir -p /etc/openldap/schema/fusiondirectory \
-    && rm -rf /usr/src/fusiondirectory/contrib/openldap/rfc2307bis.schema \
     && cp /usr/src/fusiondirectory/contrib/bin/* /usr/sbin \
     && cp -R /usr/src/fusiondirectory/contrib/openldap/*.schema /etc/openldap/schema/fusiondirectory \
     && cp -R /usr/src/fusiondirectory-plugins/*/contrib/openldap/*.schema /etc/openldap/schema/fusiondirectory \

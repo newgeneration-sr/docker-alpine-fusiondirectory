@@ -31,7 +31,7 @@ FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
   PLUGIN_LDAPDUMP=${PLUGIN_LDAPDUMP:-"TRUE"}
   PLUGIN_LDAPMANAGER=${PLUGIN_LDAPMANAGER:-"TRUE"}
   PLUGIN_MAIL=${PLUGIN_MAIL:-"TRUE"}
-  PLUGIN_MIXEDGROUPS=${PLUGIN_MIXEDGROUPS:-"FALSE"}
+  PLUGIN_MIXEDGROUPS=${PLUGIN_MIXEDGROUPS:-"TRUE"}
   PLUGIN_NAGIOS=${PLUGIN_NAGIOS:-"FALSE"}
   PLUGIN_NETGROUPS=${PLUGIN_NETGROUPS:-"TRUE"}
   PLUGIN_NEWSLETTER=${PLUGIN_NEWSLETTER:-"FALSE"}
@@ -475,7 +475,7 @@ fd_apply() {
     fusiondirectory-insert-schema $ARG ipmi*.schema
   fi
 
-  if [[ "$PLUGIN_NAGIOS" != "FALSE" ]] && [[ "$PLUGIN_MIXEDGROUPS" != "false" ]];  then
+  if [[ "$PLUGIN_NAGIOS" != "FALSE" ]] && [[ "$PLUGIN_NAGIOS" != "false" ]];  then
     fd_apply Nagios
     fusiondirectory-insert-schema $ARG nagios*.schema
     fusiondirectory-insert-schema $ARG netways*.schema

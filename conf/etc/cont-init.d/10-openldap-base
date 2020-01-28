@@ -32,9 +32,10 @@ if [ ! -f "$FIRST_START_DONE" ]; then
   FD_PASS_HASH=$(slappasswd -s "$FD_PASS" )
 
   /usr/bin/schema2ldif /etc/openldap/schema/core.schema > /etc/openldap/schema/core.ldif
-  /usr/bin/schema2ldif /etc/openldap/schema/cosine.schema > /etc/openldap/schema/cosine.ldif
   /usr/bin/schema2ldif /etc/openldap/schema/inetorgperson.schema > /etc/openldap/schema/inetorgperson.ldif
-  /usr/bin/schema2ldif /etc/openldap/schema/nis.schema > /etc/openldap/schema/nis.ldif
+  /usr/bin/schema2ldif /etc/openldap/schema/cosine.schema > /etc/openldap/schema/cosine.ldif
+  # /usr/bin/schema2ldif /etc/openldap/schema/nis.schema > /etc/openldap/schema/nis.ldif
+  /usr/bin/schema2ldif /etc/openldap/schema/fusiondirectory/rfc2307bis.schema > /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
 
   sed -i "s;{CONFIG_PASS};$CONFIG_PASS_HASH;g" /tmp/config.ldif
   sed -i "s;{ADMIN_PASS};$ADMIN_PASS_HASH;g" /tmp/config.ldif
