@@ -6,7 +6,10 @@ then
   [ -d /run/openldap ] || mkdir -p /run/openldap
   [ -d /etc/openldap/slapd.d ] || mkdir -p /etc/openldap/slapd.d
   [ -d /etc/openldap/state ] || mkdir -p /etc/openldap/state
-
+  if [ -z "$BASE_DN" ]; then
+    BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
+    ROOT=$( echo $DOMAIN | cut -d '.' -f1 )
+  fi
   chown -R ldap:ldap /var/lib/openldap
   chown -R ldap:ldap /etc/openldap
   chown -R ldap:ldap /run/openldap
@@ -21,13 +24,20 @@ then
     echo "NEED TO PATCH"
     slapcat -n0 > /tmp/00config.ldif
     slapcat  > /tmp/00users.ldif
-    sed -E -i '/dn: cn=\{[0-9]+\}nis/,/^$/d' /tmp/00config.ldif
-    sed -E -i '/dn: cn=\{[0-9]+\}systems-fd/,/^$/d' /tmp/00config.ldif
-    sed -E -i '/dn: cn=\{[0-9]+\}service-fd/,/^$/d' /tmp/00config.ldif
-    sed -E -i 's/structuralObjectClass: (groupOfNames|posixGroup)/objectClass: groupOfNames/g' /tmp/00users.ldif
     killall slapd
     rm -r /etc/openldap/slapd.d/*
     rm -r /var/lib/openldap/*
+    cp /tmp/00config.ldif /var/lib/openldap/
+    cp /tmp/00users.ldif /var/lib/openldap/
+    sed -E -i '/dn: cn=\{[0-9]+\}nis/,/^$/d' /tmp/00config.ldif
+    sed -E -i '/dn: cn=\{[0-9]+\}systems-fd/,/^$/d' /tmp/00config.ldif
+    sed -E -i '/dn: cn=\{[0-9]+\}service-fd/,/^$/d' /tmp/00config.ldif
+    sed -E -i 's/structuralObjectClass: groupOfNames/structuralObjectClass: groupOfNames\nobjectClass: posixGroup\nobjectClass: groupOfNames/g' /tmp/00users.ldif
+    sed -E -i 's/structuralObjectClass: posixGroup/structuralObjectClass: groupOfNames\nobjectClass: posixGroup\nobjectClass: groupOfNames/g' /tmp/00users.ldif
+    sed -E -i "s/memberUid: (.*)/memberUid: \1\nmemberx: uid=\1,ou=people,$BASE_DN/g" /tmp/00users.ldif
+    sed -E -i "s/member: uid=(.*),ou=people,$BASE_DN/member: uid=\1,ou=people,$BASE_DN\nmemberUidx: \1/g" /tmp/00users.ldif
+    sed -E -i "s/memberx/member/g" /tmp/00users.ldif
+    sed -E -i "s/memberUidx/memberUid/g" /tmp/00users.ldif
     echo " >> Reimport Config"
     slapadd -n 0 -F /etc/openldap/slapd.d -l /tmp/00config.ldif
 
