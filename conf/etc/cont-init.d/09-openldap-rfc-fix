@@ -44,8 +44,6 @@ then
     echo " >> Import rfc2307bis"
     slapadd -n 0 -F /etc/openldap/slapd.d -l /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
     /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
-    fusiondirectory-insert-schema -i /etc/openldap/schema/fusiondirectory/service*.schema
-    fusiondirectory-insert-schema -i /etc/openldap/schema/fusiondirectory/systems*.schema
     killall slapd
     echo " >> Reimport Users"
     slapadd -n 1 -F /etc/openldap/slapd.d -l /tmp/00users.ldif
