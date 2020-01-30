@@ -303,7 +303,7 @@ FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
 
   
 
-  if [ "x$(fusiondirectory-insert-schema -l | grep nis )" = "nis" ];
+  if [ "x$(fusiondirectory-insert-schema -l | grep nis )" = "xnis" ];
   then 
       PLUGIN_MIXEDGROUPS='FALSE'
   fi
