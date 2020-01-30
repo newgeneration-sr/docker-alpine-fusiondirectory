@@ -2,6 +2,9 @@
 
 if [ -f /var/lib/openldap/base ];
 then
+  rm /tmp/* -r
+  kill $(ps -a | grep slapd | awk '{printf($2" ")}')
+  
   [ -d /var/lib/openldap ] || mkdir -p /var/lib/openldap
   [ -d /run/openldap ] || mkdir -p /run/openldap
   [ -d /etc/openldap/slapd.d ] || mkdir -p /etc/openldap/slapd.d
@@ -20,6 +23,7 @@ then
   if [ "xnis" = "x$(fusiondirectory-insert-schema -l | grep nis )" ];
   then
 
+    tar -czf backup.tgz /etc/openldap/slapd.d/ /var/lib/openldap/
 
     echo "NEED TO PATCH"
     slapcat -n0 > /tmp/00config.ldif
@@ -32,22 +36,35 @@ then
     sed -E -i '/dn: cn=\{[0-9]+\}nis/,/^$/d' /tmp/00config.ldif
     sed -E -i '/dn: cn=\{[0-9]+\}systems-fd/,/^$/d' /tmp/00config.ldif
     sed -E -i '/dn: cn=\{[0-9]+\}service-fd/,/^$/d' /tmp/00config.ldif
-    sed -E -i 's/structuralObjectClass: groupOfNames/structuralObjectClass: groupOfNames\nobjectClass: posixGroup\nobjectClass: groupOfNames/g' /tmp/00users.ldif
+    sed -E -i 's/structuralObjectClass: groupOfNames/structuralObjectClass: groupOfNames\nobjectClass: groupOfNames/g' /tmp/00users.ldif
     sed -E -i 's/structuralObjectClass: posixGroup/structuralObjectClass: groupOfNames\nobjectClass: posixGroup\nobjectClass: groupOfNames/g' /tmp/00users.ldif
-    sed -E -i "s/memberUid: (.*)/memberUid: \1\nmemberx: uid=\1,ou=people,$BASE_DN/g" /tmp/00users.ldif
-    sed -E -i "s/member: uid=(.*),ou=people,$BASE_DN/member: uid=\1,ou=people,$BASE_DN\nmemberUidx: \1/g" /tmp/00users.ldif
-    sed -E -i "s/memberx/member/g" /tmp/00users.ldif
-    sed -E -i "s/memberUidx/memberUid/g" /tmp/00users.ldif
+    sed -E -i "s/memberUid: (.*)/memberUid: \1\nmember: uid=\1,ou=people,$BASE_DN/g" /tmp/00users.ldif
+    
     echo " >> Reimport Config"
     slapadd -n 0 -F /etc/openldap/slapd.d -l /tmp/00config.ldif
 
     echo " >> Import rfc2307bis"
     slapadd -n 0 -F /etc/openldap/slapd.d -l /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
+    
     /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
+    fusiondirectory-insert-schema -i systems-fd.schema
+    fusiondirectory-insert-schema -i systems-fd-conf.schema
+    fusiondirectory-insert-schema -i service-fd.schema
     killall slapd
     echo " >> Reimport Users"
     slapadd -n 1 -F /etc/openldap/slapd.d -l /tmp/00users.ldif
+    touch /var/lib/openldap/base 
+    /etc/cont-init.d/0000-start
+    /etc/cont-init.d/0001-env
+    /etc/cont-init.d/10-openldap-base
+    /etc/cont-init.d/11-openldap-config
+    /etc/cont-init.d/12-openldap-fd-schema
+    /etc/cont-init.d/13-openldap-fd-config
+    /etc/cont-init.d/15-openldap-ready
+    /etc/cont-init.d/9999-end
     
+    mv backup.tgz  /var/lib/openldap/
+
   fi
 
 fi
