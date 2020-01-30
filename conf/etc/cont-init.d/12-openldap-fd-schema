@@ -599,5 +599,10 @@ fd_apply() {
   
   killall slapd
 
+  if [ ! -z $LOGO ];
+  then
+    wget $LOGO -O /var/www/fusiondirectory/html/themes/breezy/icons/scalable/apps/fusiondirectory.png
+  fi 
+
   touch $FUSIONDIRECTORY_INSTALLED 
 
