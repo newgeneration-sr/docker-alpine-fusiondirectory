@@ -3,7 +3,7 @@
 if [ -f /var/lib/openldap/base ];
 then
   rm /tmp/* -r
-  kill $(ps -a | grep slapd | awk '{printf($2" ")}')
+  kill $(ps -a | grep slapd | awk '{printf($1" ")}')
   
   [ -d /var/lib/openldap ] || mkdir -p /var/lib/openldap
   [ -d /run/openldap ] || mkdir -p /run/openldap
@@ -47,6 +47,7 @@ then
     slapadd -n 0 -F /etc/openldap/slapd.d -l /etc/openldap/schema/fusiondirectory/rfc2307bis.ldif
     
     /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
+    sleep 2
     fusiondirectory-insert-schema -i systems-fd.schema
     fusiondirectory-insert-schema -i systems-fd-conf.schema
     fusiondirectory-insert-schema -i service-fd.schema
