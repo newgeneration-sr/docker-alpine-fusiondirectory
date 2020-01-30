@@ -5,7 +5,7 @@ fix_users(){
     FILE=$1
     C=0
     BASE_DN=$(grep "dn: ou=people" $FILE | sed -e 's/dn: ou=people,//g' )
-    sed -E -i 's/structuralObjectClass: posixGroup/structuralObjectClass: groupOfNames\nobjectClass: posixGroup\nobjectClass: groupOfNames/g' test
+    sed -E -i 's/structuralObjectClass: posixGroup/structuralObjectClass: groupOfNames\nobjectClass: posixGroup\nobjectClass: groupOfNames/g' $FILE
     sed -E -i "s/memberUid: (.*)/memberUid: \1\nmember: uid=\1,ou=people,$BASE_DN/g" $FILE
     IFS=''
     while read -r line; do 
