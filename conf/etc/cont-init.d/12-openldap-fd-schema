@@ -8,6 +8,7 @@ FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
     BASE_DN="dc="$( echo $DOMAIN | sed -e "s/\./,dc=/g" )
   fi
 
+
   PLUGIN_ALIAS=${PLUGIN_ALIAS:-"FALSE"}
   PLUGIN_APPLICATIONS=${PLUGIN_APPLICATIONS:-"FALSE"}
   PLUGIN_ARGONAUT=${PLUGIN_ARGONAUT:-"FALSE"}
@@ -294,10 +295,19 @@ FUSIONDIRECTORY_INSTALLED="/var/lib/openldap/fusiondirectory"
   fi
 
   
+  /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
 
 
   rm -R /tmp/fd-plugins 
   cp -R /usr/src/fusiondirectory-plugins  /tmp/fd-plugins
+
+  
+
+  if [ "x$(fusiondirectory-insert-schema -l | grep nis )" = "nis" ];
+  then 
+      PLUGIN_MIXEDGROUPS='FALSE'
+  fi
+
 
   if [ "$PLUGIN_ALIAS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/alias ; fi;
   if [ "$PLUGIN_APPLICATIONS" != "TRUE" ]; then rm -rf /tmp/fd-plugins/applications ; fi;
@@ -367,8 +377,6 @@ fd_apply() {
   echo "** [openldap-fusiondirectory] ${RE}${A}pplying Fusion Directory "$@" schema"
 }
 
-
-  /usr/sbin/slapd -h "ldapi://%2Frun%2Fopenldap%2Fldapi.sock" 
 
   if [ "$REAPPLY_PLUGIN_SCHEMAS" = "TRUE" ] || [ "$REAPPLY_PLUGIN_SCHEMAS" = "true" ];  then
   	fd_apply core
