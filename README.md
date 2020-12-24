@@ -1,6 +1,6 @@
 ![docker build automated](https://img.shields.io/docker/cloud/automated/dotriver/fusiondirectory)
 ![docker build status](https://img.shields.io/docker/cloud/build/dotriver/fusiondirectory)
-![docker build status](https://img.shields.io/docker/cloud/pulls/dotriver/fusiondirectory)
+![docker build status](https://img.shields.io/docker/pulls/dotriver/fusiondirectory)
 
 # OpenLDAP + Fusiondirectory on Alpine Linux + S6 Overlay
 
