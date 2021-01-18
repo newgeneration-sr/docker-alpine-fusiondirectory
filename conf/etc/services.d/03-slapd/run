@@ -1,7 +1,12 @@
 #!/usr/bin/with-contenv bash
 ulimit -n 1024
 NAME="SLAPD"
-COMMAND="/usr/sbin/slapd -h 'ldap://' -u ldap -g ldap -d $LOG_LEVEL"
+if [ -f /tmp/ldaps ];
+then 
+    COMMAND="/usr/sbin/slapd -h 'ldap:// ldaps://' -u ldap -g ldap -d $LOG_LEVEL"
+else
+    COMMAND="/usr/sbin/slapd -h 'ldap://' -u ldap -g ldap -d $LOG_LEVEL"
+fi
 WAIT="/tmp/openldap-init"
 
 exec service-handler "$NAME" "$COMMAND" "$WAIT"

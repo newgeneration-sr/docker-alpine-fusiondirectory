@@ -1,9 +1,31 @@
 #!/usr/bin/with-contenv bash
 
+
+check_certs(){
+    TLS_CERTS=$(grep 'olcTLSCertificate' /etc/openldap/slapd.d/cn\=config.ldif | awk '{print($2)}')
+    if [ ! "x$TLS_CERTS" = "x" ];
+    then
+        for key in $TLS_CERTS;
+        do
+            echo "check for $key"
+            if [ ! -f $key ];
+            then
+                echo "$key not found, fall back to ldap://"
+                return
+            fi
+        done
+        echo "0" > /tmp/ldaps
+    fi
+}
+
 chown -R ldap:ldap /var/lib/openldap
 chown -R ldap:ldap /etc/openldap
 chown -R ldap:ldap /run/openldap
 chown -R nginx:nginx /var/www/fusiondirectory/html 
 
 chmod 777 /tmp
+
+check_certs
+
 echo "0" > /tmp/openldap-init
+
