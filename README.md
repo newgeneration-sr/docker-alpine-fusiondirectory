@@ -16,6 +16,7 @@ FusionDirectory documentation [here](https://www.fusiondirectory.org/documentati
 - FD_ADMIN=fd-admin ( FusionDirectory Admin username )
 - FD_PASS=admin ( FusionDirectory Admin password )
 - INSTANCE=exemple ( FusionDirectory instance name )
+- MAIL_LOGO=http://url.to/images/for/mail ( change FusionDirectory mail template )
 
 # Compose file exemple
 
@@ -34,6 +35,7 @@ services:
       - FD_ADMIN=fd-admin
       - FD_PASS=password
       - INSTANCE=exemple
+      - MAIL_LOGO=http://url.to/images/for/mail
     ports:
       - 8000:80
       - 389:389

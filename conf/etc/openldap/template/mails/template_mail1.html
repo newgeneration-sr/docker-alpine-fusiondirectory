@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
+		<style type="text/css">
+
+			pre { 
+				font-family: Ubuntu; 
+				font-size: 13px; 
+				font-style: normal; 
+				font-variant: normal; 
+				font-weight: 400; 
+				line-height: 18.5667px; 
+			}
+
+			body{
+				font-family: Ubuntu; 
+				font-size: 14px; 
+				font-style: normal; 
+				font-variant: normal; 
+				font-weight: 400; 
+				line-height: 20px; 
+			}
+			.center{
+				text-align: center; 
+			}
+			.self-center{
+				margin: auto;
+			}
+			.title{
+				text-transform: uppercase;
+			}
+			.container-50{
+				margin: auto; 
+				width: 50%;  
+			}
+			.logo {
+				display: block;
+				margin: auto;
+				max-width: 50vw;
+			}
+			.space{
+				padding: 25px;
+			}
+			.small{
+				font-size: 10px;
+			}
+			.round{
+				border-radius: 10px;
+			}
+
+			.btn{
+				text-align: center; 
+				border-radius: 5px;
+				background-color: #cccccc; 
+				color: #333333;
+				padding: 15px;
+				margin: 10px;
+				display: inline-block;
+				text-decoration: none;
+				text-transform: uppercase;
+				box-shadow: 0px 0px 5px #666;
+
+			}
+
+			.primary .btn{
+				background-color: #eeeeee; 
+				color: #0a3d62;
+				box-shadow: 0px 0px 5px #002A51;
+
+			}
+			.default .btn{
+				background-color: #0a3d62; 
+				color: #eeeeee;
+				box-shadow: 0px 0px 5px #666;
+
+			}
+
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="center space">
+				<img src="{MAIL_LOGO}" class="logo" />
+			</div>
+
+			<div class="space center ">
+				<h1 class="title">Récupération de mot de passe</h1>
+				<p>
+				Si vous n'avez pas demandé la récupération de votre mot de passe, ignorez simplement ce mail
+				</p>
+			</div>
+
+			<div class="space center ">
+				<a class="btn" href="%s">Changer mon mot de passe</a>                 
+			</div>
+
+		</div>
+	</body>
+</html>

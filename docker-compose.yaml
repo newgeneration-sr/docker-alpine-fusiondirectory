@@ -2,7 +2,7 @@ version: '3'
 services:
 
   openldap-fd:
-    image: fusiondirectory
+    build: .
     environment:
       - ADMIN_PASS=0JcUIZYGkiqqecya
       - CONFIG_PASS=0JcUIZYGkiqqecya
@@ -13,7 +13,7 @@ services:
       - PLUGIN_POSIX=TRUE
       - PLUGIN_MIXEDGROUPS=TRUE
       - PLUGIN_NETGROUPS=TRUE
-      
+      - MAIL_LOGO=https://www.drodd.com/images15/3-8.jpg
     ports:
       - 8000:80
       - 389:389

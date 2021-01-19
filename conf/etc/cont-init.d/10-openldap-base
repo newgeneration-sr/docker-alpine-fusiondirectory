@@ -67,6 +67,20 @@ if [ ! -f "$FIRST_START_DONE" ]; then
   sed -i "s;{CN_ADMIN_BS64};$CN_ADMIN_BS64;g"  /tmp/fusiondirectory.ldif
   sed -i "s;{UID_FD_ADMIN_BS64};$UID_FD_ADMIN_BS64;g"  /tmp/fusiondirectory.ldif
 
+
+#####################################################################################################
+  sed -i "s;{MAIL_LOGO};$MAIL_LOGO;g" /etc/openldap/template/mails/template_mail1.html
+  sed -i "s;{MAIL_LOGO};$MAIL_LOGO;g" /etc/openldap/template/mails/template_mail2.html
+
+  mail1_templated=$(echo "fdPasswordRecoveryMailBody::$( base64 /etc/openldap/template/mails/template_mail1.html )" | sed 's/::/:: /' | tr '\n' '|' )
+  mail2_templated=$(echo "fdPasswordRecoveryMail2Body::$( base64 /etc/openldap/template/mails/template_mail2.html )" | sed 's/::/:: /' | tr '\n' '|')
+
+  sed -i "s;{fdPasswordRecoveryMailBody};$mail1_templated;" /tmp/fusiondirectory.ldif
+  sed -i "s;{fdPasswordRecoveryMail2Body};$mail2_templated;" /tmp/fusiondirectory.ldif
+
+  sed -i "s;|;\n ;g" /tmp/fusiondirectory.ldif
+#####################################################################################################
+
   slapadd -F /etc/openldap/slapd.d -l /tmp/fusiondirectory.ldif
   rm /tmp/fusiondirectory.ldif
   

@@ -210,18 +210,13 @@ objectClass: fdDashboardPluginConf
 objectClass: fdPasswordRecoveryConf
 fdPasswordRecoveryLoginAttribute: uid
 fdPasswordRecoveryActivated: TRUE
-fdPasswordRecoveryEmail: noreplay@{DOMAIN}
-fdPasswordRecoveryMailSubject: [{ROOT}] Password recovery link
-fdPasswordRecoveryMail2Subject: [{ROOT}] Password recovery successful
-fdPasswordRecoverySalt: test
+fdPasswordRecoveryEmail: noreply@{DOMAIN}
+fdPasswordRecoveryMailSubject: [{ROOT}] Récupération de mot de passe
+fdPasswordRecoveryMail2Subject: [{ROOT}] Mot de passe récupéré avec succes
+fdPasswordRecoverySalt: s4ltF0re(ovry
 fdPasswordRecoveryUseAlternate: TRUE
-fdPasswordRecoveryMailBody:: SGVsbG8sCiAgICBBIHBhc3N3b3JkIHJlY292ZXJ5IGxpbms
- gd2FzIGFza2VkIGZvciB5b3VyIGFjY291bnQgCkhlcmUgYXJlIHlvdXIgaW5mb3JtYXRpb25zID
- ogCiAtIExvZ2luIDogJXMKIC0gTGluayA6ICVzClRoaXMgbGluayBpcyBvbmx5IHZhbGlkIGZvc
- iAxMCBtaW51dGVzLgplUXVhbnR1bSBTZXJ2aWNlcw==
-fdPasswordRecoveryMail2Body:: SGVsbG8sCiAgICBZb3VyIHBhc3N3b3JkIGhhcyBiZWVuIG
- NoYW5nZWQgIApIZXJlIGFyZSB5b3VyIGluZm9ybWF0aW9ucyA6IAogLSBMb2dpbiA6ICVzCmVRd
- WFudHVtIFNlcnZpY2Vz
+{fdPasswordRecoveryMailBody}
+{fdPasswordRecoveryMail2Body}
 fusionConfigMd5: d9b7821f751f05924ed214855fc14a0b
 fdTheme: breezy
 fdLanguage: fr_FR
