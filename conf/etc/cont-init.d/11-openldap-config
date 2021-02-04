@@ -9,6 +9,7 @@ cp /etc/openldap/template/ldap.conf /etc/openldap/ldap.conf
 
 sed -i "s;{BASE_DN};$BASE_DN;g" /etc/openldap/ldap.conf
 sed -i "s;{ADMIN_PASS};$ADMIN_PASS;g" /etc/openldap/ldap.conf
+sed -i "s;{CONFIG_PASS};$CONFIG_PASS;g" /etc/openldap/ldap.conf
 
 chmod 0600 /etc/openldap/ldap.conf
 chown ldap:ldap /etc/openldap/ldap.conf
